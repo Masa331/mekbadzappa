@@ -1,14 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
-import './log';
-import MyP from './MyP.js';
-import SecondP from './SecondP.js';
-
-// require('./log');
-
-// console.log(Testy.test1());
-
 
 class App extends Component {
   state = {
@@ -45,19 +36,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <MyP text={this.props.fok}/>
-        <p>{window._initialState_.a}</p>
-        <SecondP>lol</SecondP>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-
-        <form className="form" onSubmit={this.handleFormSubmit}>
-          <input type="text" placeholder="Hours" value={this.state.hours} onChange={ this.handleOnHourChange }/>
-          <input type="text" placeholder="Description" value={this.state.description} onChange={ this.handleOnDescriptionChange }/>
-          <button type="submit">Submit</button>
+      <div>
+        <form className="form-inline" onSubmit={this.handleFormSubmit}>
+          <input className="form-control col-sm-1" type="text" value={this.state.hours} onChange={ this.handleOnHourChange }/>
+          <input className="form-control col-sm-8" type="text" value={this.state.description} onChange={ this.handleOnDescriptionChange }/>
+          {/* <button className="btn btn-sm btn-outline-secondary col-sm-2" type="submit">Submit</button> */}
+          <button className="btn btn-outline-secondary col-sm-3" type="submit">Waaaaagh</button>
         </form>
 
         <hr/>

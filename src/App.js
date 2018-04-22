@@ -12,12 +12,10 @@ function Row(props) {
   )
 }
 
-const Blank = { hours: '', description: '', data: [] };
-
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = Store.get() || Blank
+    this.state = Store.get()
   }
 
   saveAndSetState = (newState) => {

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Utils } from './utils';
 import { Store } from './store';
+require('./coreutils.js')
 
 function Row(props) {
   return (
@@ -24,8 +25,7 @@ function RecordGroup(props) {
 }
 
 function RecordsTable(props) {
-  let reducer = function(a, record) { a[record.date] = [...a[record.date] || [], record]; return a }
-  let groups = props.records.reduce(reducer, {});
+  let groups = props.records.groupBy((record) => ( record.date ));
 
   return (
     <table className="table table-sm no-top-border">
@@ -58,7 +58,6 @@ class App extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    let today = new Date()
 
     let newState = {
       hours: '',
@@ -69,7 +68,7 @@ class App extends Component {
           id: Utils.uuid(),
           hours: this.state.hours,
           description: this.state.description,
-          date: today.getDate() + "." + today.getMonth() + "." + today.getFullYear()
+          date: Date.today()
         }
       ]
     }

@@ -1,14 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Utils } from './utils';
 import { Store } from './store';
 
 function Row(props) {
   return (
-    <tr key={props.id}>
+    <tr>
       <td>{props.hours}</td>
       <td>{props.description}</td>
       <td><button className="btn btn-link" data-id={ props.id } onClick={ props.deleteHandler }>x</button></td>
     </tr>
+  )
+}
+
+function RecordGroup(props) {
+  return (
+    <Fragment>
+      <tr><td colSpan="3">{ props.date }</td></tr>
+      { props.records.map((record) => (
+        <Row key= { record.id } deleteHandler={ props.deleteHandler } {...record}/>
+      ))}
+    </Fragment>
+  )
+}
+
+function RecordsTable(props) {
+  let reducer = function(a, record) { a[record.date] = [...a[record.date] || [], record]; return a }
+  let groups = props.records.reduce(reducer, {});
+
+  return (
+    <table className="table table-sm no-top-border">
+      <tbody>
+        { Object.entries(groups).map((group) => (
+          <RecordGroup key={ group[0] } date={ group[0] } deleteHandler={ props.deleteHandler } records={ group[1] }/>
+        ))}
+      </tbody>
+    </table>
   )
 }
 
@@ -32,6 +58,7 @@ class App extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
+    let today = new Date()
 
     let newState = {
       hours: '',
@@ -41,7 +68,8 @@ class App extends Component {
         {
           id: Utils.uuid(),
           hours: this.state.hours,
-          description: this.state.description
+          description: this.state.description,
+          date: today.getDate() + "." + today.getMonth() + "." + today.getFullYear()
         }
       ]
     }
@@ -75,13 +103,7 @@ class App extends Component {
         <hr/>
 
         <div className="mt-2">
-          <table className="table table-sm no-top-border">
-            <tbody>
-              { this.state.data.map((dato) => (
-                <Row key={ dato.id } deleteHandler={ this.deleteItem } {...dato}/>
-              ))}
-            </tbody>
-          </table>
+          <RecordsTable deleteHandler={ this.deleteItem } records={ this.state.data }/>
         </div>
       </div>
     );
